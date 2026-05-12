@@ -36,19 +36,23 @@ export default function Login() {
         <h1 className="text-2xl font-bold">Masuk</h1>
         <p className="text-sm text-slate-500">Chat terenkripsi end-to-end, kata sandi Anda membuka kunci pribadi Anda secara lokal.</p>
 
-        <label className="block">
+        <label htmlFor="login-email" className="block">
           <span className="text-sm font-medium">Email</span>
           <input
+            id="login-email"
+            name="email"
             type="email" required value={email} onChange={(e) => setEmail(e.target.value)}
             className="mt-1 w-full rounded-md border border-slate-300 px-3 py-2 outline-none focus:border-indigo-500"
             autoComplete="email"
           />
         </label>
 
-        <label className="block">
+        <label htmlFor="login-password" className="block">
           <span className="text-sm font-medium">Password</span>
           <div className="mt-1 relative">
             <input
+              id="login-password"
+              name="password"
               type={showPassword ? 'text' : 'password'} required value={password} onChange={(e) => setPassword(e.target.value)}
               className="w-full rounded-md border border-slate-300 px-3 py-2 pr-10 outline-none focus:border-indigo-500"
               autoComplete="current-password"

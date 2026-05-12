@@ -1,0 +1,42 @@
+services:
+  server:
+    build:
+      context: .
+      dockerfile: Dockerfile.server
+    container_name: cipherchat-server-dev
+    ports:
+      - "3001:3001"
+    environment:
+      - NODE_ENV=development
+      - PORT=3001
+    volumes:
+      - ./server/src:/app/src
+      - ./server/data:/app/data
+      - ./server/keys:/app/keys
+    command: node --watch src/index.js
+    restart: unless-stopped
+    stdin_open: true
+    tty: true
+
+  client:
+    build:
+      context: .
+      dockerfile: Dockerfile.client
+    container_name: cipherchat-client-dev
+    ports:
+      - "5173:5173"
+    depends_on:
+      - server
+    environment:
+      - VITE_API_BASE=http://server:3001/api
+      - VITE_API_TARGET=http://server:3001
+    volumes:
+      - ./client/src:/app/src
+      - ./client/public:/app/public
+    restart: unless-stopped
+    stdin_open: true
+    tty: true
+
+networks:
+  default:
+    driver: bridge

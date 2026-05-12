@@ -44,31 +44,66 @@ export function AuthProvider({ children }) {
       iv: wrapped.iv,
       kdfSalt: wrapped.kdfSalt,
     });
+    
+    // **CRITICAL**: Write to localStorage IMMEDIATELY before setting state
+    localStorage.setItem('jwt', res.token);
+    localStorage.setItem('email', res.email);
+    localStorage.setItem('publicKey', JSON.stringify(jwk));
+    
+    // Set state for React component updates
     setJwt(res.token);
     setEmail(res.email);
     setPublicKeyJwk(jwk);
     setPrivateKey(keyPair.privateKey);
+    
+    console.log('[auth] Registration complete, token saved to localStorage');
   }
 
   async function login(emailInput, password) {
+    // Clear any old token state before login
+    localStorage.removeItem('jwt');
+    localStorage.removeItem('email');
+    localStorage.removeItem('publicKey');
+    
     const res = await api.login({ email: emailInput, password });
+    console.log('[auth] Login successful, setting token:', res.token?.substring(0, 20) + '...');
+    
     const priv = await unwrapPrivateKey(password, {
       encryptedPrivateKey: res.encryptedPrivateKey,
       iv: res.iv,
       kdfSalt: res.kdfSalt,
     });
     const jwk = JSON.parse(res.publicKey);
+    
+    // **CRITICAL**: Write to localStorage IMMEDIATELY before setting state
+    // This prevents race condition with API calls
+    localStorage.setItem('jwt', res.token);
+    localStorage.setItem('email', res.email);
+    localStorage.setItem('publicKey', JSON.stringify(jwk));
+    
+    // Set state for React component updates
     setJwt(res.token);
     setEmail(res.email);
     setPublicKeyJwk(jwk);
     setPrivateKey(priv);
+    
+    console.log('[auth] Login complete, token saved to localStorage and state');
   }
 
   function logout() {
+    console.log('[auth] Logging out...');
+    // Clear state
     setJwt(null);
     setEmail(null);
     setPublicKeyJwk(null);
     setPrivateKey(null);
+    
+    // Explicitly clear localStorage
+    localStorage.removeItem('jwt');
+    localStorage.removeItem('email');
+    localStorage.removeItem('publicKey');
+    
+    console.log('[auth] Logout complete, all state cleared');
   }
 
   async function importContactPublicKey(jwkOrString) {

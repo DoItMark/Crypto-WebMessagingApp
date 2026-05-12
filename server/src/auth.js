@@ -60,13 +60,27 @@ export async function issueToken(email) {
 
 export function requireAuth(req, res, next) {
   const h = req.headers.authorization || '';
+  
+  // DEBUG: Log all headers
+  console.log('[auth] Headers received:', Object.keys(req.headers));
+  console.log('[auth] Authorization header:', h ? `Present (${h.substring(0, 30)}...)` : 'MISSING');
+  console.log('[auth] Request path:', req.path);
+  
   const m = h.match(/^Bearer\s+(.+)$/i);
-  if (!m) return res.status(401).json({ error: 'Missing bearer token' });
+  if (!m) {
+    console.log('[auth] Failed: No Bearer token found in Authorization header');
+    return res.status(401).json({ error: 'Missing bearer token' });
+  }
 
+  console.log('[auth] Found bearer token, verifying...');
   verify(m[1], verifyingKey, { algs: [JWT_ALG], iss: JWT_ISS, aud: JWT_AUD })
     .then(({ payload }) => {
+      console.log('[auth] Token verified successfully for email:', payload.sub || payload.email);
       req.user = { email: payload.sub || payload.email };
       next();
     })
-    .catch((err) => res.status(401).json({ error: err.message }));
+    .catch((err) => {
+      console.log('[auth] Token verification failed:', err.message);
+      res.status(401).json({ error: err.message });
+    });
 }

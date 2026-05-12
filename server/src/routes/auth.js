@@ -58,16 +58,27 @@ router.post('/register', async (req, res) => {
 router.post('/login', async (req, res) => {
   try {
     const { email, password } = req.body || {};
+    console.log('[login] Attempt for email:', email);
+    
     if (!isValidEmail(email) || typeof password !== 'string') {
+      console.log('[login] Validation failed - invalid email or password format');
       return res.status(400).json({ error: 'Invalid credentials' });
     }
 
     const user = q.findUserByEmail.get(email);
-    if (!user) return res.status(401).json({ error: 'Invalid credentials' });
+    if (!user) {
+      console.log('[login] User not found in database:', email);
+      return res.status(401).json({ error: 'Invalid credentials' });
+    }
 
+    console.log('[login] User found, comparing password...');
     const ok = await bcrypt.compare(password + user.password_salt, user.hashed_password);
-    if (!ok) return res.status(401).json({ error: 'Invalid credentials' });
+    if (!ok) {
+      console.log('[login] Password mismatch for:', email);
+      return res.status(401).json({ error: 'Invalid credentials' });
+    }
 
+    console.log('[login] Success, issuing token for:', email);
     const token = await issueToken(email);
     res.json({
       token,
