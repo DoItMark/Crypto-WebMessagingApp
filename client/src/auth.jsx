@@ -45,7 +45,6 @@ export function AuthProvider({ children }) {
       kdfSalt: wrapped.kdfSalt,
     });
     
-    // **CRITICAL**: Write to localStorage IMMEDIATELY before setting state
     localStorage.setItem('jwt', res.token);
     localStorage.setItem('email', res.email);
     localStorage.setItem('publicKey', JSON.stringify(jwk));

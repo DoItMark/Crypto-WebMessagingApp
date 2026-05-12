@@ -9,7 +9,8 @@ async function request(path, { method = 'GET', body, auth = true } = {}) {
   const headers = { 'Content-Type': 'application/json' };
   if (auth) Object.assign(headers, authHeaders());
 
-  // Debug logging
+
+  //  Debugger
   if (auth) {
     const token = localStorage.getItem('jwt');
     console.log(`[API] ${method} ${BASE}${path}`);
@@ -32,7 +33,6 @@ async function request(path, { method = 'GET', body, auth = true } = {}) {
   try {
     data = text ? JSON.parse(text) : null;
   } catch (e) {
-    // Response is not JSON (likely HTML error page)
     console.error(`[API] Failed to parse response from ${BASE}${path}`);
     console.error(`[API] Response: ${text.substring(0, 100)}`);
     const msg = `Server error or incorrect API endpoint. Got: ${text.substring(0, 50)}...`;
@@ -45,7 +45,7 @@ async function request(path, { method = 'GET', body, auth = true } = {}) {
     const msg = (data && data.error) || res.statusText || 'Request failed';
     console.error(`[API] ${res.status} ${msg}`);
     
-    // Special handling for 401
+    // Debugger
     if (res.status === 401) {
       console.error('[API] Unauthorized - checking token...');
       const token = localStorage.getItem('jwt');
