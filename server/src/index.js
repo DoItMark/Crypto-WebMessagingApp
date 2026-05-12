@@ -11,7 +11,25 @@ async function main() {
   await initJwtKeys();
 
   const app = express();
-  app.use(cors());
+  
+  // Explicit CORS configuration to allow Authorization header
+  app.use(cors({
+    origin: '*',
+    methods: ['GET', 'HEAD', 'PUT', 'PATCH', 'POST', 'DELETE', 'OPTIONS'],
+    allowedHeaders: ['Content-Type', 'Authorization'],
+    credentials: false,
+  }));
+  
+  // Add debug middleware to log incoming headers
+  app.use((req, res, next) => {
+    if (req.path.startsWith('/api/')) {
+      console.log(`[middleware] ${req.method} ${req.path}`);
+      console.log('[middleware] All headers:', Object.keys(req.headers));
+      console.log('[middleware] Authorization:', req.headers.authorization ? 'YES' : 'NO');
+    }
+    next();
+  });
+  
   app.use(express.json({ limit: '1mb' }));
 
   app.get('/api/health', (_req, res) => res.json({ ok: true }));
