@@ -1,5 +1,6 @@
 import { Navigate, Route, Routes } from 'react-router-dom';
 import { useAuth } from './auth.jsx';
+import Landing from './pages/Landing.jsx';
 import Login from './pages/Login.jsx';
 import Register from './pages/Register.jsx';
 import Contacts from './pages/Contacts.jsx';
@@ -14,11 +15,12 @@ export default function App() {
   const { unlocked } = useAuth();
   return (
     <Routes>
+      <Route path="/" element={unlocked ? <Navigate to="/contacts" replace /> : <Landing />} />
       <Route path="/login" element={unlocked ? <Navigate to="/contacts" replace /> : <Login />} />
       <Route path="/register" element={unlocked ? <Navigate to="/contacts" replace /> : <Register />} />
       <Route path="/contacts" element={<RequireUnlocked><Contacts /></RequireUnlocked>} />
       <Route path="/chat/:email" element={<RequireUnlocked><Chat /></RequireUnlocked>} />
-      <Route path="*" element={<Navigate to={unlocked ? '/contacts' : '/login'} replace />} />
+      <Route path="*" element={<Navigate to={unlocked ? '/contacts' : '/'} replace />} />
     </Routes>
   );
 }

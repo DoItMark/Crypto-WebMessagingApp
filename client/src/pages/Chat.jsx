@@ -119,7 +119,7 @@ export default function Chat() {
             <div>
               <h1 className="font-semibold">{contactEmail}</h1>
               <p className="text-xs text-slate-500">
-                {convKey ? 'Secure channel established (AES-256-GCM)' : 'Establishing secure channel…'}
+                {convKey ? 'Saluran aman didirikan (AES-256-GCM)' : 'Membentuk saluran aman...'}
               </p>
             </div>
           </div>
@@ -131,7 +131,7 @@ export default function Chat() {
         <div ref={scrollRef} className="flex-1 overflow-y-auto bg-white rounded-xl shadow p-4 space-y-2">
           {err && <div className="text-sm text-red-600">{err}</div>}
           {messages.length === 0 && !err && (
-            <div className="text-sm text-slate-400 text-center py-8">No messages yet. Say hi.</div>
+            <div className="text-sm text-slate-400 text-center py-8">Belum ada pesan. Ucapkan salam.</div>
           )}
           {messages.map((m) => (
             <div key={m.id} className={`flex ${m.mine ? 'justify-end' : 'justify-start'}`}>
@@ -154,13 +154,13 @@ export default function Chat() {
         <form onSubmit={send} className="mt-3 flex gap-2">
           <input
             type="text" value={draft} onChange={(e) => setDraft(e.target.value)}
-            placeholder={convKey ? 'Type a message…' : 'Connecting…'}
+            placeholder={convKey ? 'Ketik pesan...' : 'Menghubungkan...'}
             disabled={!convKey || sending}
             className="flex-1 rounded-md border border-slate-300 px-3 py-2 outline-none focus:border-indigo-500"
           />
           <button type="submit" disabled={!convKey || sending || !draft.trim()}
             className="rounded-md bg-indigo-600 text-white px-4 py-2 font-medium hover:bg-indigo-700 disabled:opacity-50">
-            Send
+            Kirim
           </button>
         </form>
       </main>

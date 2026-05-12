@@ -28,19 +28,19 @@ export default function Contacts() {
       <header className="bg-white border-b border-slate-200">
         <div className="max-w-3xl mx-auto px-4 py-3 flex items-center justify-between">
           <div>
-            <h1 className="font-semibold">Contacts</h1>
-            <p className="text-xs text-slate-500">Signed in as {email}</p>
+            <h1 className="font-semibold">Kontak</h1>
+            <p className="text-xs text-slate-500">Masuk sebagai {email}</p>
           </div>
           <button onClick={() => { logout(); nav('/login', { replace: true }); }}
-            className="text-sm text-slate-600 hover:text-slate-900">Sign out</button>
+            className="text-sm text-slate-600 hover:text-slate-900">Keluar</button>
         </div>
       </header>
 
       <main className="max-w-3xl mx-auto px-4 py-6">
-        {loading && <div className="text-sm text-slate-500">Loading…</div>}
+        {loading && <div className="text-sm text-slate-500">Memuat...</div>}
         {err && <div className="text-sm text-red-600">{err}</div>}
         {!loading && items.length === 0 && (
-          <div className="text-sm text-slate-500">No other users yet — register a second account to start chatting.</div>
+          <div className="text-sm text-slate-500">Belum ada pengguna lain — daftarkan akun kedua untuk mulai bercerita.</div>
         )}
         <ul className="bg-white rounded-xl shadow divide-y divide-slate-100">
           {items.map((c) => (
@@ -49,9 +49,9 @@ export default function Contacts() {
                 className="flex items-center justify-between px-4 py-3 hover:bg-slate-50">
                 <div>
                   <div className="font-medium">{c.email}</div>
-                  <div className="text-xs text-slate-500">joined {new Date(c.created_at).toLocaleDateString()}</div>
+                  <div className="text-xs text-slate-500">bergabung {new Date(c.created_at).toLocaleDateString('id-ID')}</div>
                 </div>
-                <span className="text-indigo-600 text-sm">Open chat →</span>
+                <span className="text-indigo-600 text-sm">Buka chat →</span>
               </Link>
             </li>
           ))}
