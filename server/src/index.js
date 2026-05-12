@@ -13,7 +13,7 @@ async function main() {
   const app = express();
   app.use(cors(
     {
-      origin: true,  // Allow all origins
+      origin: process.env.CLIENT_URL || 'https://client-production-c04a.up.railway.app',  // Allow all origins
       credentials: true,
     }
   ));
