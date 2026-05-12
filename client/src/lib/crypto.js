@@ -94,13 +94,14 @@ function conversationSalt(emailA, emailB) {
 }
 
 export async function deriveConversationKey(myPrivateKey, theirPublicKey, myEmail, theirEmail) {
+  console.log('[KEY EXCHANGE] Start with', theirEmail);
   const sharedBits = await subtle.deriveBits(
     { name: 'ECDH', public: theirPublicKey },
     myPrivateKey,
     256,
   );
   const hkdfMaterial = await subtle.importKey('raw', sharedBits, 'HKDF', false, ['deriveKey']);
-  return subtle.deriveKey(
+  const key = await subtle.deriveKey(
     {
       name: 'HKDF',
       hash: 'SHA-256',
@@ -112,23 +113,33 @@ export async function deriveConversationKey(myPrivateKey, theirPublicKey, myEmai
     false,
     ['encrypt', 'decrypt'],
   );
+  console.log('[KEY EXCHANGE] Done');
+  return key;
 }
 
 export async function encryptMessage(aesKey, plaintext) {
+  console.log('[ENCRYPT] Start:', plaintext);
   const iv = randomBytes(12);
   const ct = await subtle.encrypt(
     { name: 'AES-GCM', iv },
     aesKey,
     new TextEncoder().encode(plaintext),
   );
-  return { ciphertext: bytesToB64(new Uint8Array(ct)), iv: bytesToB64(iv) };
+  const ciphertextB64 = bytesToB64(new Uint8Array(ct));
+  const ivB64 = bytesToB64(iv);
+  console.log('[ENCRYPT] Ciphertext:', ciphertextB64.substring(0, 40) + '...');
+  console.log('[ENCRYPT] Done');
+  return { ciphertext: ciphertextB64, iv: ivB64 };
 }
 
 export async function decryptMessage(aesKey, ciphertextB64, ivB64) {
+  console.log('[DECRYPT] Ciphertext:', ciphertextB64.substring(0, 40) + '...');
   const pt = await subtle.decrypt(
     { name: 'AES-GCM', iv: b64ToBytes(ivB64) },
     aesKey,
     b64ToBytes(ciphertextB64),
   );
-  return new TextDecoder().decode(pt);
+  const plaintext = new TextDecoder().decode(pt);
+  console.log('[DECRYPT] Done:', plaintext);
+  return plaintext;
 }
