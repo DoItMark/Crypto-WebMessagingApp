@@ -13,7 +13,7 @@ Aplikasi web messaging yang aman dengan enkripsi end-to-end, autentikasi penggun
 
 ---
 
-## 📝 Deskripsi
+## Deskripsi
 
 **CipherChat** adalah aplikasi web real-time untuk mengirim pesan yang aman dengan fitur-fitur:
 - **Enkripsi End-to-End**: Pesan dienkripsi sebelum dikirim ke server
@@ -24,7 +24,7 @@ Aplikasi web messaging yang aman dengan enkripsi end-to-end, autentikasi penggun
 
 ---
 
-## 🛠️ Teknologi
+## Teknologi
 
 ### Frontend
 | Teknologi | Versi | Deskripsi |
@@ -52,7 +52,7 @@ Aplikasi web messaging yang aman dengan enkripsi end-to-end, autentikasi penggun
 
 ---
 
-## 📦 Dependencies
+## Dependencies
 
 ### Client Dependencies
 
@@ -90,7 +90,7 @@ Aplikasi web messaging yang aman dengan enkripsi end-to-end, autentikasi penggun
 
 ---
 
-## ⚙️ Prasyarat
+## Prasyarat
 
 Sebelum menjalankan aplikasi, pastikan Anda telah menginstal:
 
@@ -107,7 +107,7 @@ docker --version  # (opsional)
 
 ---
 
-## 🚀 Instalasi
+## Instalasi
 
 ### 1. Clone Repository
 ```bash
@@ -194,7 +194,7 @@ docker-compose up
 
 ---
 
-## 🔧 Konfigurasi Environment
+## Konfigurasi Environment
 
 ### Server Configuration
 
@@ -299,7 +299,7 @@ Crypto-WebMessagingApp/
 
 ---
 
-## 🔐 Fitur Keamanan
+## Fitur Keamanan
 
 - **Password Hashing**: Menggunakan bcrypt dengan salt rounds
 - **JWT Token**: Autentikasi berbasis token
@@ -309,7 +309,7 @@ Crypto-WebMessagingApp/
 
 ---
 
-## 📚 API Endpoints
+## API Endpoints
 
 ### Authentication
 - `POST /api/auth/register` - Registrasi pengguna baru
@@ -328,7 +328,7 @@ Crypto-WebMessagingApp/
 
 ---
 
-## ❓ Troubleshooting
+## Troubleshooting
 
 ### Port sudah digunakan
 ```bash
@@ -352,13 +352,13 @@ npm install
 
 ---
 
-## 📄 Lisensi
+## Lisensi
 
 Proyek ini dibuat untuk tujuan pembelajaran mata kuliah II4021 Kriptografi.
 
 ---
 
-## 📧 Kontak & Support
+## Kontak & Support
 
 Luckman Fakhmanidris Arvasirri 18223041@std.stei.itb.ac.id
 
