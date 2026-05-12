@@ -30,7 +30,8 @@ services:
     depends_on:
       - server
     environment:
-      - VITE_API_BASE=http://localhost:3001/api
+      - VITE_API_BASE=http://server:3001/api
+      - VITE_API_TARGET=http://server:3001
     restart: unless-stopped
     healthcheck:
       test: ["CMD", "node", "-e", "require('http').get('http://localhost:5173', (r) => {if (r.statusCode !== 200) throw new Error(r.statusCode)})"]
