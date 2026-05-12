@@ -10,9 +10,3 @@ build/
 server/data/
 server/keys/
 *.sqlite
-*.db
-
-# Claude-related files
-.claude/
-claude.md
-CLAUDE.md
