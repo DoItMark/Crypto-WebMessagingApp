@@ -50,7 +50,6 @@ export function AuthProvider({ children }) {
     localStorage.setItem('email', res.email);
     localStorage.setItem('publicKey', JSON.stringify(jwk));
     
-    // Set state for React component updates
     setJwt(res.token);
     setEmail(res.email);
     setPublicKeyJwk(jwk);
@@ -60,7 +59,6 @@ export function AuthProvider({ children }) {
   }
 
   async function login(emailInput, password) {
-    // Clear any old token state before login
     localStorage.removeItem('jwt');
     localStorage.removeItem('email');
     localStorage.removeItem('publicKey');
@@ -75,13 +73,11 @@ export function AuthProvider({ children }) {
     });
     const jwk = JSON.parse(res.publicKey);
     
-    // **CRITICAL**: Write to localStorage IMMEDIATELY before setting state
-    // This prevents race condition with API calls
+
     localStorage.setItem('jwt', res.token);
     localStorage.setItem('email', res.email);
     localStorage.setItem('publicKey', JSON.stringify(jwk));
     
-    // Set state for React component updates
     setJwt(res.token);
     setEmail(res.email);
     setPublicKeyJwk(jwk);
@@ -92,13 +88,11 @@ export function AuthProvider({ children }) {
 
   function logout() {
     console.log('[auth] Logging out...');
-    // Clear state
     setJwt(null);
     setEmail(null);
     setPublicKeyJwk(null);
     setPrivateKey(null);
     
-    // Explicitly clear localStorage
     localStorage.removeItem('jwt');
     localStorage.removeItem('email');
     localStorage.removeItem('publicKey');
