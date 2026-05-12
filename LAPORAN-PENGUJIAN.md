@@ -1,11 +1,11 @@
 # LAPORAN PENGUJIAN MODUL KRIPTOGRAFI
-## Uji Pembentukan Kunci, Enkripsi, dan Dekripsi Pesan
+Uji Pembentukan Kunci, Enkripsi, dan Dekripsi Pesan
 
 ---
 
 ## 3.4 Uji Pembentukan Kunci Komunikasi
 
-Bagian ini menjelaskan pengujian untuk proses pembentukan kunci komunikasi antara dua pengguna dalam sistem. Sistem menggunakan algoritma ECDH (Elliptic Curve Diffie-Hellman) dengan kurva P-256 dan HKDF untuk derivasi kunci.
+Bagian ini menjelaskan pengujian untuk proses pembentukan kunci komunikasi antara dua pengguna dalam sistem. Sistem menggunakan algoritma ECDH (Elliptic Curve Diffie-Hellman) dengan kurva P-256 dan HKDF untuk derivasi kunci. Pengujian bertujuan untuk memverifikasi bahwa proses pembentukan kunci berjalan dengan baik sesuai dengan spesifikasi yang telah ditetapkan.
 
 ### 3.4.1 Key Exchange antara Dua Pengguna
 
@@ -37,13 +37,11 @@ Pengujian ini memverifikasi bahwa dua pengguna dapat melakukan pertukaran kunci 
 | Jumlah Pengguna | 2 (Alice dan Bob) |
 
 #### Hasil yang Diharapkan
-```
-✅ User A membuat pasangan kunci P-256
-✅ User B membuat pasangan kunci P-256
-✅ User A mengimpor kunci publik User B
-✅ User B mengimpor kunci publik User A
-✅ Kedua pengguna siap untuk derivasi kunci
-```
+- User A berhasil membuat pasangan kunci P-256
+- User B berhasil membuat pasangan kunci P-256
+- User A berhasil mengimpor kunci publik User B
+- User B berhasil mengimpor kunci publik User A
+- Kedua pengguna siap untuk melanjutkan ke tahap derivasi kunci
 
 ---
 
@@ -101,12 +99,10 @@ Hasil: conversation_key_A ≡ conversation_key_B
 ```
 
 #### Hasil yang Diharapkan
-```
-✅ User A melakukan ECDH derivation
-✅ User B melakukan ECDH derivation
-✅ Kedua pengguna menghasilkan kunci simetris yang identik
-✅ Pesan terenkripsi dengan kunci A dapat didekripsi dengan kunci B
-```
+- User A berhasil melakukan ECDH derivation
+- User B berhasil melakukan ECDH derivation
+- Kedua pengguna menghasilkan kunci simetris yang identik
+- Pesan terenkripsi dengan kunci A dapat didekripsi dengan kunci B
 
 ---
 
@@ -188,12 +184,10 @@ User B (Penerima):
 ```
 
 #### Hasil yang Diharapkan
-```
-✅ Pesan 1 terenkripsi dan terdekripsi dengan benar
-✅ Pesan 2 (Unicode) terenkripsi dan terdekripsi dengan benar
-✅ Pesan 3 (Emoji) terenkripsi dan terdekripsi dengan benar
-✅ Semua karakter dalam plaintext asli terpelihara setelah dekripsi
-```
+- Pesan 1 terenkripsi dan terdekripsi dengan benar
+- Pesan 2 (Unicode) terenkripsi dan terdekripsi dengan benar
+- Pesan 3 (Emoji) terenkripsi dan terdekripsi dengan benar
+- Semua karakter dalam plaintext asli terpelihara setelah dekripsi
 
 ---
 
@@ -242,21 +236,20 @@ Jika ada perubahan pada ciphertext atau IV atau kunci, GCM tag tidak akan cocok 
 #### Hasil yang Diharapkan
 ```
 Kasus 1 - Kunci Salah:
-  ❌ Dekripsi gagal
-  Error: "Authentication tag verification failed"
+
+Kasus 1 - Kunci Salah:
+- Dekripsi gagal
+- Error: "Authentication tag verification failed"
 
 Kasus 2 - Ciphertext Diubah:
-  ❌ Dekripsi gagal
-  Error: "Authentication tag verification failed"
+- Dekripsi gagal
+- Error: "Authentication tag verification failed"
 
 Kasus 3 - IV Salah:
-  ❌ Dekripsi gagal
-  Error: "Decryption failed"
+- Dekripsi gagal
+- Error: "Decryption failed"
 
-✅ Sistem berhasil mendeteksi semua upaya dekripsi yang tidak valid
-```
-
----
+Kesimpulan: Sistem berhasil mendeteksi semua upaya dekripsi yang tidak valid
 
 ## 3.7 Analisis Hasil
 
@@ -264,26 +257,34 @@ Kasus 3 - IV Salah:
 
 #### 3.7.1 Keberhasilan Key Exchange
 ✅ **BERHASIL**
+Status: BERHASIL
+
+Hasil pengujian menunjukkan bahwa:
 - Dua pengguna dapat melakukan pertukaran kunci publik dengan aman
 - Kunci publik dapat ditransmisikan melalui channel yang tidak aman (HTTP/HTTPS)
 - Sistem dapat mengimpor dan memverifikasi kunci publik dengan benar
 
 #### 3.7.2 Keberhasilan Key Derivation
-✅ **BERHASIL**
+Status: BERHASIL
+
+Hasil pengujian menunjukkan bahwa:
 - Algoritma ECDH + HKDF menghasilkan kunci simetris yang identik untuk kedua pengguna
-- Deterministic: hasil derivasi selalu sama untuk pengguna yang sama
-- Kunci dapat digunakan untuk enkripsi dan dekripsi pesan
+- Proses bersifat deterministic: hasil derivasi selalu sama untuk pengguna yang sama
+- Kunci yang diturunkan dapat digunakan untuk enkripsi dan dekripsi pesan
 
 #### 3.7.3 Keberhasilan Enkripsi-Dekripsi
-✅ **BERHASIL**
+Status: BERHASIL
+
+Hasil pengujian menunjukkan bahwa:
 - Pesan dapat dienkripsi dengan benar menggunakan AES-GCM
 - Pesan dapat didekripsi dengan benar oleh penerima yang memiliki kunci yang sama
-- Sistem mendukung berbagai jenis plaintext: ASCII, Unicode, Emoji
+- Sistem mendukung berbagai jenis plaintext: ASCII, Unicode, dan Emoji
 
 #### 3.7.4 Keberhasilan Deteksi Anomali
-✅ **BERHASIL**
-- Sistem mendeteksi dekripsi dengan kunci salah
-- Sistem mendeteksi ciphertext yang telah diubah (tampered)
+Status: BERHASIL
+
+Hasil pengujian menunjukkan bahwa:
+- Sistem mendeteksi upaya ciphertext yang telah diubah (tampered)
 - Sistem mendeteksi penggunaan IV yang tidak sesuai
 - Semua kasus error ditangani dengan mekanisme authentication tag AES-GCM
 
@@ -292,25 +293,17 @@ Kasus 3 - IV Salah:
 #### Algoritma yang Digunakan
 | Fungsi | Algoritma | Parameter | Status |
 |--------|-----------|-----------|--------|
-| Key Exchange | ECDH | P-256 (256-bit) | ✅ Aman |
-| Key Derivation | HKDF-SHA256 | 256-bit output | ✅ Aman |
-| Enkripsi Simetris | AES-GCM | 256-bit key | ✅ Aman |
-| Authenticity | GCM Tag | 128-bit | ✅ Aman |
-| Random IV | CSPRNG | 96-bit | ✅ Aman |
+1. Forward Secrecy
+   Setiap percakapan menggunakan kunci simetris yang diturunkan dari ECDH. Jika satu kunci komunikasi terkompromi, kunci komunikasi lain tetap aman. Properti ini terpenuhi pada level percakapan antara dua pengguna.
 
-#### Analisis Keamanan
+2. Authentication
+   AES-GCM menyediakan authenticity check melalui authentication tag. Server tidak dapat memodifikasi ciphertext tanpa terdeteksi. Properti ini terpenuhi.
 
-**1. Forward Secrecy**
-- Setiap percakapan menggunakan kunci simetris yang diturunkan dari ECDH
-- Jika satu kunci komunikasi terkompromi, kunci komunikasi lain tetap aman
-- ✅ Terpenuhi pada level percakapan
+3. Confidentiality
+   Plaintext dienkripsi dengan AES-256. Brute force attack memerlukan 2^256 attempts untuk memecahkan kunci. Properti ini terpenuhi.
 
-**2. Authentication**
-- AES-GCM menyediakan authenticity check melalui authentication tag
-- Server tidak dapat memodifikasi ciphertext tanpa dideteksi
-- ✅ Terpenuhi
-
-**3. Confidentiality**
+4. Integrity
+   Setiap ciphertext dilengkapi dengan GCM tag. Modifikasi ciphertext akan menyebabkan dekripsi gagal. Properti ini terpenuhi.tiality**
 - Plaintext dienkripsi dengan AES-256
 - Brute force attack memerlukan 2^256 attempts
 - ✅ Terpenuhi
@@ -331,12 +324,12 @@ Kasus 3 - IV Salah:
 ### Kesimpulan Akhir
 
 Sistem kriptografi telah berhasil menjalani semua pengujian:
-- ✅ Key Exchange: Berhasil
-- ✅ Key Derivation: Berhasil
-- ✅ Enkripsi-Dekripsi: Berhasil
-- ✅ Deteksi Anomali: Berhasil
+- Key Exchange: Berhasil
+- Key Derivation: Berhasil
+- Enkripsi-Dekripsi: Berhasil
+- Deteksi Anomali: Berhasil
 
-**Sistem siap untuk implementasi produksi dengan perhatian khusus pada best practices keamanan di atas.**
+Sistem siap untuk implementasi produksi dengan perhatian khusus pada best practices keamanan yang telah dijelaskan pada bagian rekomendasi.
 
 ---
 
